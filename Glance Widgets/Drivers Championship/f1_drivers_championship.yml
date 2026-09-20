@@ -1,0 +1,25 @@
+- type: custom-api
+  title: Drivers Standings
+  cache: 5m
+  url: http://${F1_API_URL}:4463/f1/drivers_standings/
+  template: |
+    <ul class="list collapsible-container" data-collapse-after="3">
+      {{ range $i, $v := .JSON.Array "drivers" }}
+      <li class="flex items-center {{ if eq $i 0 }}color-primary{{ else if eq $i 1 }}color-highlight{{ end }}">
+        <div class="grow min-width-0">
+          <span>
+            {{ .String "position" }}. {{ .String "surname" }}
+            <img src="https://flagcdn.com/w20/{{ .String "flag" }}.png"
+                 alt=""
+                 style="width: 20px; height: 14px; object-fit: cover; vertical-align: middle"
+                 class="inline-block rounded-sm" />
+          </span>
+
+          {{ if .String "teamId" }}
+            <span class="size-h6">({{ .String "teamId" }})</span>
+          {{ end }}
+        </div>
+        <span class="shrink-0 text-right">{{ .String "points" }}</span>
+      </li>
+      {{ end }}
+    </ul>

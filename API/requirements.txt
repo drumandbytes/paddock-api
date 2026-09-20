@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+jinja2
+httpx
+fastf1
+pycountry
+pytz
+fastapi-cache2
+svgwrite
+numpy
