@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0](https://github.com/drumandbytes/paddock-api/compare/v2.5.0...v2.6.0) (2026-09-26)
+
+
+### Features
+
+* add /healthz liveness endpoint ([#51](https://github.com/drumandbytes/paddock-api/issues/51)) ([141826b](https://github.com/drumandbytes/paddock-api/commit/141826b5a426de41eb69ee7155dbb5ff0969c92d))
+
 ## [2.5.0](https://github.com/drumandbytes/paddock-api/compare/v2.4.0...v2.5.0) (2026-09-25)
 
 
