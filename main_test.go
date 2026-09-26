@@ -106,6 +106,13 @@ func TestDriversContractAndCache(t *testing.T) {
 	}
 }
 
+func TestHealthz(t *testing.T) {
+	mock := newUpstreamMock(t)
+	if result := decode(t, request(t, newServer(testApp(t, mock)), "/healthz")); result["status"] != "ok" || len(mock.hits) != 0 {
+		t.Fatalf("unexpected response %#v, upstream hits %v", result, mock.hits)
+	}
+}
+
 func TestConstructorsContract(t *testing.T) {
 	mock := newUpstreamMock(t)
 	result := decode(t, request(t, newServer(testApp(t, mock)), "/f1/constructors_standings/"))

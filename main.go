@@ -134,6 +134,8 @@ func newServer(a *app) *echo.Echo {
 		e.GET(route.path, route.handler)
 		e.GET(route.path+"/", route.handler)
 	}
+	// Liveness only - never touches upstream APIs, so an Ergast/OpenF1 outage doesn't restart the pod.
+	e.GET("/healthz", func(c echo.Context) error { return c.JSON(http.StatusOK, map[string]string{"status": "ok"}) })
 	return e
 }
 
