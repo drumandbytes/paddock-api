@@ -5,70 +5,70 @@
 
 ### Features
 
-* add /healthz liveness endpoint ([#51](https://github.com/drumandbytes/paddock-api/issues/51)) ([141826b](https://github.com/drumandbytes/paddock-api/commit/141826b5a426de41eb69ee7155dbb5ff0969c92d))
+* add /healthz liveness endpoint ([#51](https://github.com/drumandbytes/paddock-api/issues/51)) ([fd15f89](https://github.com/drumandbytes/paddock-api/commit/fd15f89e1f07b322aa5f67ce1f1a91f324f8c4d2))
 
 ## [2.5.0](https://github.com/drumandbytes/paddock-api/compare/v2.4.0...v2.5.0) (2026-09-25)
 
 
 ### Features
 
-* latest session falls back to the last complete session during OpenF1 lockout ([#49](https://github.com/drumandbytes/paddock-api/issues/49)) ([ce892d7](https://github.com/drumandbytes/paddock-api/commit/ce892d783fa1afdb0e333716f95209692cb38832))
+* latest session falls back to the last complete session during OpenF1 lockout ([#49](https://github.com/drumandbytes/paddock-api/issues/49)) ([f813827](https://github.com/drumandbytes/paddock-api/commit/f813827f1582d4a530922c7918336abdfd2dd142))
 
 ## [2.4.0](https://github.com/drumandbytes/paddock-api/compare/v2.3.0...v2.4.0) (2026-09-24)
 
 
 ### Features
 
-* durable cache so finished sessions survive restarts ([#44](https://github.com/drumandbytes/paddock-api/issues/44)) ([1247a12](https://github.com/drumandbytes/paddock-api/commit/1247a1219c5d1d2ad2e2a997c31b197d5198d1ee))
+* durable cache so finished sessions survive restarts ([#44](https://github.com/drumandbytes/paddock-api/issues/44)) ([6f6d0a3](https://github.com/drumandbytes/paddock-api/commit/6f6d0a362d59e38e1d026689dff993946e4eec73))
 
 ## [2.3.0](https://github.com/drumandbytes/paddock-api/compare/v2.2.2...v2.3.0) (2026-09-24)
 
 
 ### Features
 
-* driver wins, short constructor names; clearer wins in standings tiles ([#41](https://github.com/drumandbytes/paddock-api/issues/41)) ([3637752](https://github.com/drumandbytes/paddock-api/commit/363775272bab04fe28ddfa9c4448bb217c846731))
+* driver wins, short constructor names; clearer wins in standings tiles ([#41](https://github.com/drumandbytes/paddock-api/issues/41)) ([1c9f701](https://github.com/drumandbytes/paddock-api/commit/1c9f701121425aee8dd870d267ce460688b6066a))
 
 ## [2.2.2](https://github.com/drumandbytes/paddock-api/compare/v2.2.1...v2.2.2) (2026-09-24)
 
 
 ### Bug Fixes
 
-* **widgets:** readable HARD in light mode, explicit tyre stints ([#39](https://github.com/drumandbytes/paddock-api/issues/39)) ([cc9aa6f](https://github.com/drumandbytes/paddock-api/commit/cc9aa6f72808457a28457ae1e53c967645e18c3c))
+* **widgets:** readable HARD in light mode, explicit tyre stints ([#39](https://github.com/drumandbytes/paddock-api/issues/39)) ([7e59a26](https://github.com/drumandbytes/paddock-api/commit/7e59a2658ca0fc4a1823064877419fcc2778a613))
 
 ## [2.2.1](https://github.com/drumandbytes/paddock-api/compare/v2.2.0...v2.2.1) (2026-09-24)
 
 
 ### Bug Fixes
 
-* consistent team names - McLaren, and OpenF1's names matched to the rest ([#37](https://github.com/drumandbytes/paddock-api/issues/37)) ([c44f2b0](https://github.com/drumandbytes/paddock-api/commit/c44f2b02ff4006b30ac1bf106f04558b9a09ea78))
+* consistent team names - McLaren, and OpenF1's names matched to the rest ([#37](https://github.com/drumandbytes/paddock-api/issues/37)) ([42b2f21](https://github.com/drumandbytes/paddock-api/commit/42b2f2163f809e08334ef7abeeb001c73c947631))
 
 ## [2.2.0](https://github.com/drumandbytes/paddock-api/compare/v2.1.2...v2.2.0) (2026-09-24)
 
 
 ### Features
 
-* latest-session endpoint/widget, hand Next Race over when the race ends ([#33](https://github.com/drumandbytes/paddock-api/issues/33)) ([f362744](https://github.com/drumandbytes/paddock-api/commit/f3627444b2dc7a92fae1bfaef49dba4b80978166))
+* latest-session endpoint/widget, hand Next Race over when the race ends ([#33](https://github.com/drumandbytes/paddock-api/issues/33)) ([451fd52](https://github.com/drumandbytes/paddock-api/commit/451fd52dde3734ad609995cb8581b269106aa691))
 
 ## [2.1.2](https://github.com/drumandbytes/paddock-api/compare/v2.1.1...v2.1.2) (2026-09-24)
 
 
 ### Bug Fixes
 
-* keep tyre usage through OpenF1 lockouts and after the race starts ([#31](https://github.com/drumandbytes/paddock-api/issues/31)) ([96685da](https://github.com/drumandbytes/paddock-api/commit/96685da1c60eee44e8d4ec0f579afd86a47e5719))
+* keep tyre usage through OpenF1 lockouts and after the race starts ([#31](https://github.com/drumandbytes/paddock-api/issues/31)) ([0c61e2f](https://github.com/drumandbytes/paddock-api/commit/0c61e2f982a09215ba4ff7b263ded536173a2bc3))
 
 ## [2.1.1](https://github.com/drumandbytes/paddock-api/compare/v2.1.0...v2.1.1) (2026-09-23)
 
 
 ### Bug Fixes
 
-* port the better-built tyre-usage widget, fix a dead docstring ref ([#27](https://github.com/drumandbytes/paddock-api/issues/27)) ([6d02b83](https://github.com/drumandbytes/paddock-api/commit/6d02b8300e8ecb60fda6330497f3b15f17b089ce))
+* port the better-built tyre-usage widget, fix a dead docstring ref ([#27](https://github.com/drumandbytes/paddock-api/issues/27)) ([c06a43c](https://github.com/drumandbytes/paddock-api/commit/c06a43cdb0ed84d53b0eff2812c6c2dc2946f616))
 
 ## [2.1.0](https://github.com/drumandbytes/paddock-api/compare/v2.0.0...v2.1.0) (2026-09-22)
 
 
 ### Features
 
-* expose last_race url/country, wire unused fields into widgets ([#25](https://github.com/drumandbytes/paddock-api/issues/25)) ([ae5329c](https://github.com/drumandbytes/paddock-api/commit/ae5329ce2cc42ae2323f52b98fc6b2fae14544d2))
+* expose last_race url/country, wire unused fields into widgets ([#25](https://github.com/drumandbytes/paddock-api/issues/25)) ([aef3965](https://github.com/drumandbytes/paddock-api/commit/aef396543f8c985b1b7fe0fea9b78dd9db988de8))
 
 ## [2.0.0](https://github.com/drumandbytes/paddock-api/compare/v1.2.2...v2.0.0) (2026-09-22)
 
@@ -79,37 +79,37 @@
 
 ### Features
 
-* replace Python implementation with Go ([#22](https://github.com/drumandbytes/paddock-api/issues/22)) ([80962fc](https://github.com/drumandbytes/paddock-api/commit/80962fc9ad7c2693feb8873c73b3bd54745a5e47))
+* replace Python implementation with Go ([#22](https://github.com/drumandbytes/paddock-api/issues/22)) ([2c60623](https://github.com/drumandbytes/paddock-api/commit/2c606230128c10e15840602a3bf2d40e5ee8fb87))
 
 ## [1.2.2](https://github.com/drumandbytes/paddock-api/compare/v1.2.1...v1.2.2) (2026-09-21)
 
 
 ### Performance Improvements
 
-* **api:** fix cache reads, move blocking Ergast/FastF1 calls to threadpool ([#20](https://github.com/drumandbytes/paddock-api/issues/20)) ([d29b6cb](https://github.com/drumandbytes/paddock-api/commit/d29b6cbb2710139bd024a8317400cd8adddb2e73))
+* **api:** fix cache reads, move blocking Ergast/FastF1 calls to threadpool ([#20](https://github.com/drumandbytes/paddock-api/issues/20)) ([7a07257](https://github.com/drumandbytes/paddock-api/commit/7a07257dd24106f783e5429a71e0d7e9d5e8de69))
 
 ## [1.2.1](https://github.com/drumandbytes/paddock-api/compare/v1.2.0...v1.2.1) (2026-09-21)
 
 
 ### Bug Fixes
 
-* track map stroke width and outline visibility ([#15](https://github.com/drumandbytes/paddock-api/issues/15)) ([b098f63](https://github.com/drumandbytes/paddock-api/commit/b098f630c7a06428d0e4eae01fba63125a9a40f7))
+* track map stroke width and outline visibility ([#15](https://github.com/drumandbytes/paddock-api/issues/15)) ([34e5d90](https://github.com/drumandbytes/paddock-api/commit/34e5d9012bc499639128b9ee87a08dd408f9ee19))
 
 ## [1.2.0](https://github.com/drumandbytes/paddock-api/compare/v1.1.0...v1.2.0) (2026-09-20)
 
 
 ### Features
 
-* add tyre usage per session for the current race weekend ([#7](https://github.com/drumandbytes/paddock-api/issues/7)) ([86417d6](https://github.com/drumandbytes/paddock-api/commit/86417d6ae0c2c5e52d45b73b5e33bf184673578b))
-* drop f1api.dev, use fastf1/Ergast for everything ([1b79466](https://github.com/drumandbytes/paddock-api/commit/1b7946640234952e969efb2caea635d7cc6797eb))
+* add tyre usage per session for the current race weekend ([#7](https://github.com/drumandbytes/paddock-api/issues/7)) ([9fcf5f5](https://github.com/drumandbytes/paddock-api/commit/9fcf5f5b2a5b27963be646d7b234e7cb4d4daea9))
+* drop f1api.dev, use fastf1/Ergast for everything ([c6adc62](https://github.com/drumandbytes/paddock-api/commit/c6adc628c1aa45835239e4ef45cfdfba01bd0fde))
 
 
 ### Bug Fixes
 
-* remove dead Lap Record/Length rows from the Next Race widgets ([#13](https://github.com/drumandbytes/paddock-api/issues/13)) ([c94b16a](https://github.com/drumandbytes/paddock-api/commit/c94b16a4b584ee3fbcfb39832e7ae347af4a00af))
-* stop retrying after a rate limit, don't burn through the whole calendar ([8ca9b4a](https://github.com/drumandbytes/paddock-api/commit/8ca9b4a846e58ae2312646be120eb5f171a4b5a4))
+* remove dead Lap Record/Length rows from the Next Race widgets ([#13](https://github.com/drumandbytes/paddock-api/issues/13)) ([99f76c6](https://github.com/drumandbytes/paddock-api/commit/99f76c6758934e03f32e4bd13726c2a3e434fc56))
+* stop retrying after a rate limit, don't burn through the whole calendar ([c6adc62](https://github.com/drumandbytes/paddock-api/commit/c6adc628c1aa45835239e4ef45cfdfba01bd0fde))
 
 
 ### Performance Improvements
 
-* select tyre_usage's needed columns before the groupby ([#14](https://github.com/drumandbytes/paddock-api/issues/14)) ([00b59ea](https://github.com/drumandbytes/paddock-api/commit/00b59ea544dd183242373d83a6d6fc14f0e680c9))
+* select tyre_usage's needed columns before the groupby ([#14](https://github.com/drumandbytes/paddock-api/issues/14)) ([69d81b0](https://github.com/drumandbytes/paddock-api/commit/69d81b0171549cba5bf144eb2870d815f52dbece))
