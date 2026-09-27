@@ -1,11 +1,6 @@
-// Command gentrackmaps pre-renders every known circuit's track-outline SVG
-// into static/track_maps/<circuitId>.svg from bacinger/f1-circuits' static
-// GeoJSON dataset, so the API's /f1/next_map handler can serve a static file
-// on the request path with no live lookup at all.
-//
-// Run via `go run ./cmd/gentrackmaps` (or the regenerate-track-maps.yml
-// workflow, monthly). Always renders at the reference colour #e5d486 -
-// map.go swaps that for the request's configured TRACK_COLOUR at serve time.
+// Command gentrackmaps pre-renders static/track_maps/<circuitId>.svg from
+// bacinger/f1-circuits so /f1/next_map serves a static file. Renders in
+// #e5d486; map.go swaps in TRACK_COLOUR at serve time.
 package main
 
 import (
@@ -34,9 +29,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	// One circuit per goroutine - raw.githubusercontent.com is a static CDN
-	// built for exactly this, and 26 fetches is nowhere near anything it'd
-	// blink at.
+	// one goroutine per circuit; 26 fetches is nothing for raw.githubusercontent.com
 	client := &http.Client{Timeout: 15 * time.Second}
 	results := make(chan result, len(trackmap.CircuitGeometryIDs))
 	var wg sync.WaitGroup

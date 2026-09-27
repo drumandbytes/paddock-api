@@ -17,9 +17,8 @@ type openF1Session struct {
 	End   string `json:"date_end"`
 }
 
-// currentWeekend is the latest race weekend whose first session has started -
-// it stays current until the next weekend's first session starts, so a
-// finished race's tyre usage keeps showing through the week.
+// currentWeekend is the latest weekend whose first session has started; it
+// stays current until the next one's does, so tyre usage shows all week.
 func currentWeekend(races []race, now time.Time) *race {
 	var current *race
 	for i := range races {
@@ -61,10 +60,8 @@ func (a *app) tyreUsage(c echo.Context) error {
 		if at.IsZero() || at.After(now) {
 			continue
 		}
-		// A finished session's stints never change, so once fetched they're
-		// kept for good - OpenF1's free tier locks out all access (even past
-		// sessions) while any session is live, which would otherwise blank
-		// data we already had.
+		// stints never change once finished; keep them, since OpenF1 locks out
+		// even past sessions while any session is live
 		sessionCacheKey := fmt.Sprintf("tyre_session:%d:%d:%s", year, selected.Round, key)
 		if cached, ok := a.cache.getDurable(sessionCacheKey, now); ok {
 			sessions[key] = cached

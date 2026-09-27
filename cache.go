@@ -48,10 +48,8 @@ func (c *cacheStore) set(key string, value any, expiresAt time.Time) {
 	c.mu.Unlock()
 }
 
-// getDurable/setDurable are for data that never changes once it exists (a
-// finished session's results). Kept in memory like any entry and, when a
-// directory is configured, mirrored to disk so it survives a restart - the
-// upstream (OpenF1) can be unreachable for long stretches around sessions.
+// getDurable/setDurable: data that never changes (finished sessions), mirrored
+// to disk when a dir is set, since OpenF1 can be unreachable for long stretches.
 func (c *cacheStore) getDurable(key string, now time.Time) (any, bool) {
 	if value, ok := c.get(key, now); ok {
 		return value, true

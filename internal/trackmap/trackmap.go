@@ -1,6 +1,4 @@
-// Package trackmap fetches circuit outline geometry from bacinger/f1-circuits
-// and renders it as a track-map SVG. Shared by the API's live /f1/next_map
-// fallback (main.go) and the offline pre-renderer (cmd/gentrackmaps).
+// Package trackmap fetches circuit outlines from bacinger/f1-circuits and renders track-map SVGs.
 package trackmap
 
 import (
@@ -16,10 +14,8 @@ import (
 
 const DefaultGeometryBase = "https://raw.githubusercontent.com/bacinger/f1-circuits/master/circuits"
 
-// CircuitGeometryIDs maps our circuitId (matches the schedule's circuit ids
-// and the static SVG filenames) to bacinger/f1-circuits' own
-// <country-code>-<year-opened> id. Update when a new circuit joins the
-// calendar.
+// CircuitGeometryIDs maps our circuitId to bacinger's <cc>-<year-opened> id.
+// Add new circuits here when they join the calendar.
 var CircuitGeometryIDs = map[string]string{
 	"albert_park": "au-1953", "shanghai": "cn-2004", "suzuka": "jp-1962", "bahrain": "bh-2002",
 	"jeddah": "sa-2021", "miami": "us-2022", "imola": "it-1953", "monaco": "mc-1929",
@@ -30,8 +26,7 @@ var CircuitGeometryIDs = map[string]string{
 	"losail": "qa-2004", "yas_marina": "ae-2009",
 }
 
-// FetchGeometry returns the [lon, lat] outline and circuit name for the
-// given geojson id (a CircuitGeometryIDs value).
+// FetchGeometry returns the [lon, lat] outline and name for a CircuitGeometryIDs value.
 func FetchGeometry(client *http.Client, base, geometryID string) ([][]float64, string, error) {
 	response, err := client.Get(fmt.Sprintf("%s/%s.geojson", base, geometryID))
 	if err != nil {
@@ -59,10 +54,8 @@ func FetchGeometry(client *http.Client, base, geometryID string) ([][]float64, s
 	return geo.Features[0].Geometry.Coordinates, geo.Features[0].Properties.Name, nil
 }
 
-// RenderSVG projects [lon, lat] coordinates to local meters (equirectangular -
-// good enough for a track a few km across) and draws them as a track-outline
-// SVG: a black outline with the given colour on top, sized to a 300px-wide
-// dashboard tile.
+// RenderSVG draws a 300px-wide track outline; equirectangular projection is
+// fine at a few km.
 func RenderSVG(coordinates [][]float64, name, colour string) ([]byte, error) {
 	if len(coordinates) == 0 {
 		return nil, errors.New("No track coordinates to draw")

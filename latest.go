@@ -11,16 +11,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// raceWindow is how long after its start a race is still treated as running -
-// F1 races are capped at 3h including stoppages, but almost all finish inside 2.
+// raceWindow: races are capped at 3h incl. stoppages, almost all finish inside 2.
 const raceWindow = 2 * time.Hour
 
 var sessionLabels = map[string]string{"fp1": "Free Practice 1", "fp2": "Free Practice 2", "fp3": "Free Practice 3", "sprintQualy": "Sprint Qualifying", "sprintRace": "Sprint Race", "qualy": "Qualifying", "race": "Race"}
 
 var openF1SessionNames = map[string]string{"fp1": "Practice 1", "fp2": "Practice 2", "fp3": "Practice 3", "sprintQualy": "Sprint Qualifying", "sprintRace": "Sprint", "qualy": "Qualifying", "race": "Race"}
 
-// sessionWindows is how long after its scheduled start a session counts as
-// still running, so it isn't picked as the "latest" one before it's over.
+// sessionWindows keep a running session from being picked as "latest".
 var sessionWindows = map[string]time.Duration{"fp1": time.Hour, "fp2": time.Hour, "fp3": time.Hour, "sprintQualy": 45 * time.Minute, "sprintRace": 45 * time.Minute, "qualy": time.Hour}
 
 func matchOpenF1Session(sessions []openF1Session, key string, at time.Time) *openF1Session {
@@ -89,8 +87,7 @@ func (a *app) latestSession(c echo.Context) error {
 	latest := sessions[0]
 	result := a.sessionResponse(year, latest, []any{})
 	ttl, have := 2*time.Minute, false
-	// A finished session's classification never changes, so it's kept for
-	// good - OpenF1's free tier locks out all access while any session is live.
+	// cached for good: OpenF1's free tier locks out all access while any session is live
 	cacheKey := sessionResultsKey(year, latest)
 	if cached, ok := a.cache.getDurable(cacheKey, now); ok {
 		result["results"], ttl, have = cached, 5*time.Minute, true
@@ -104,8 +101,7 @@ func (a *app) latestSession(c echo.Context) error {
 		}
 	}
 	if !have {
-		// Latest results aren't available yet (typically the lockout right after a
-		// session): show the newest earlier session we still hold, and say what's pending.
+		// no latest results yet (post-session lockout): show the newest one we hold
 		for _, s := range sessions[1:] {
 			if cached, ok := a.cache.getDurable(sessionResultsKey(year, s), now); ok {
 				fallback := a.sessionResponse(year, s, cached)
@@ -204,8 +200,7 @@ func sessionTimeCell(duration, gap json.RawMessage, dnf, dns, dsq, leader bool) 
 	return ""
 }
 
-// lastNumber reads a JSON number, or the last non-null entry of an array of
-// them (OpenF1 returns per-phase values for qualifying, e.g. [Q1, Q2, Q3]).
+// lastNumber reads a number or the last non-null array entry (qualifying is [Q1, Q2, Q3]).
 func lastNumber(raw json.RawMessage) (float64, bool) {
 	if len(raw) == 0 || string(raw) == "null" {
 		return 0, false
@@ -235,8 +230,7 @@ func formatSessionDuration(seconds float64) string {
 	return fmt.Sprintf("%d:%02d.%03d", m, s, ms)
 }
 
-// shortTeamName maps OpenF1's team names onto the short names the rest of
-// the API uses (from Ergast constructor ids), so tiles read consistently.
+// shortTeamName maps OpenF1 team names onto the API's Ergast-derived short names.
 func shortTeamName(name string) string {
 	switch name {
 	case "Red Bull Racing":
