@@ -146,5 +146,9 @@ paddock-api/
 └── docker-compose.yaml # Local development compose file
 ```
 
+# How it was made
+
+Built with the help of an AI coding assistant (Claude). I review and test what gets published.
+
 # License
 MIT - see [LICENSE](./LICENSE).
