@@ -97,9 +97,8 @@ func (a *app) fetchJSON(url string, target any) error {
 	return decoder.Decode(target)
 }
 
-// fetchOpenF1 spaces out calls to OpenF1, whose free tier allows 3 requests
-// per second - the tyre and latest-session widgets each need several per
-// refresh and load together.
+// fetchOpenF1 spaces calls out: OpenF1's free tier allows 3 req/s and widgets
+// load together.
 func (a *app) fetchOpenF1(url string, target any) error {
 	a.openF1Mu.Lock()
 	if wait := time.Until(a.openF1Next); wait > 0 {

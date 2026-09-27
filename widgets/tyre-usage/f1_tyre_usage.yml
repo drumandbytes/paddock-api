@@ -2,15 +2,9 @@
   title: Tyre Usage
   cache: 5m
   url: http://${F1_API_URL}:4463/f1/tyre_usage/
-  # Usage only, not allocation: there's no structured source anywhere for a
-  # driver's pre-weekend tyre-compound allocation, so this only ever reports
-  # what OpenF1 recorded being used stint-by-stint once a session's actually
-  # run. Each session key is only present once its scheduled time has
-  # passed; a still-null key's sessions.Array returns an empty slice, so
-  # between race weekends - when every session is still null - this shows a
-  # deliberate "no data yet" message instead of a blank box under the title
-  # (Glance itself always renders the widget's title/container regardless of
-  # template output, so there's no way to hide the whole tile from in here).
+  # Usage only: there's no source for pre-weekend allocation. Session keys are null
+  # until scheduled, so between weekends this prints an explicit "no data yet"
+  # (Glance renders the title regardless, so the tile can't be hidden).
   template: |
     <div class="flex flex-column gap-15">
       {{ $fp1 := .JSON.Array "sessions.fp1" }}

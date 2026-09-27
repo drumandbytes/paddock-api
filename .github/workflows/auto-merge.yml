@@ -19,8 +19,7 @@ jobs:
        github.event.workflow_run.actor.login == 'dnb-robot[bot]')
     uses: drumandbytes/reusable-actions/.github/workflows/auto-merge.yml@v1
     with:
-      # dnb-robot opens release-please PRs (patch-only) and track-map PRs, which
-      # never touch the manifest and so always count as patch.
+      # dnb-robot's release-please and track-map PRs never touch the manifest, so always patch.
       patch-only-authors: '["dnb-robot[bot]"]'
       # A GITHUB_TOKEN merge triggers no workflows: no release, no publish.yml run.
       use-app-token-for-merge: true
