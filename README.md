@@ -6,7 +6,7 @@
 
 **F1 data, shaped for a dashboard - not a spreadsheet.**
 
-[Drumandbytes Projects](https://drumandbytes.com/projects/)
+[Drumandbytes Projects](https://drumandbytes.com/projects/?ref=glance-f1-readme)
 
 ![README](https://img.shields.io/badge/Actively%20Maintained-Green)
 ![README](https://img.shields.io/github/v/release/drumandbytes/paddock-api)
