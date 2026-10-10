@@ -3,7 +3,7 @@ name: CI
 on:
   # PR branches only, as in the org's other repos.
   push:
-    branches-ignore: [master]
+    branches-ignore: [main]
   workflow_dispatch:
 
 concurrency:
