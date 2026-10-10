@@ -12,6 +12,8 @@ import (
 )
 
 func (a *app) nextMap(c echo.Context) error {
+	// Same URL every race: make downstream caches revalidate instead of pinning the first circuit.
+	c.Response().Header().Set("Cache-Control", "no-cache")
 	next, err := a.getNextRace()
 	if err != nil {
 		return c.String(http.StatusBadGateway, "Failed to fetch race info: "+err.Error())

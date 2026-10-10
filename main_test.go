@@ -167,6 +167,9 @@ func TestNextMapStaticAndDynamicContract(t *testing.T) {
 	if dynamic.Header().Get("Content-Type") != "image/svg+xml" || !strings.Contains(dynamic.Body.String(), `xmlns="http://www.w3.org/2000/svg"`) || !strings.Contains(dynamic.Body.String(), "#e5d486") || !strings.Contains(dynamic.Body.String(), "Circuit de Monaco") {
 		t.Fatalf("unexpected dynamic SVG: %s", dynamic.Body.String())
 	}
+	if got := dynamic.Header().Get("Cache-Control"); got != "no-cache" {
+		t.Fatalf("unexpected Cache-Control: %q", got)
+	}
 	if err := os.WriteFile(filepath.Join(a.config.staticMapDir, "monaco.svg"), []byte(`<svg stroke="#e5d486">static</svg>`), 0o644); err != nil {
 		t.Fatal(err)
 	}
