@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.6.1](https://github.com/drumandbytes/paddock-api/compare/v2.6.0...v2.6.1) (2026-10-10)
+
+
+### Bug Fixes
+
+* accept status text as an OpenF1 session result position ([#60](https://github.com/drumandbytes/paddock-api/issues/60)) ([ffcc2ce](https://github.com/drumandbytes/paddock-api/commit/ffcc2cebd83357036ebfd4fdadf27c254e33e6b7))
+* **deps:** bump golang.org/x/net to v0.60.0 ([#62](https://github.com/drumandbytes/paddock-api/issues/62)) ([01593d8](https://github.com/drumandbytes/paddock-api/commit/01593d82b70c2c141053b93ba354c006ec2472b2))
+
 ## [2.6.0](https://github.com/drumandbytes/paddock-api/compare/v2.5.0...v2.6.0) (2026-09-26)
 
 
