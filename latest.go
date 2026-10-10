@@ -106,6 +106,9 @@ func (a *app) latestSession(c echo.Context) error {
 			if cached, ok := a.cache.getDurable(sessionResultsKey(year, s), now); ok {
 				fallback := a.sessionResponse(year, s, cached)
 				fallback["pending"] = result["session"]
+				if upstreamErr, ok := result["upstream_error"]; ok {
+					fallback["upstream_error"] = upstreamErr
+				}
 				result, ttl = fallback, 2*time.Minute
 				break
 			}
