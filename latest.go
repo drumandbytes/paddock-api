@@ -125,7 +125,7 @@ func (a *app) fetchSessionResults(key string, at, now time.Time) ([]map[string]a
 		return nil, false, fmt.Errorf("session not on OpenF1 yet")
 	}
 	var results []struct {
-		Position     *int            `json:"position"`
+		Position     sessionPosition `json:"position"`
 		DriverNumber int             `json:"driver_number"`
 		Duration     json.RawMessage `json:"duration"`
 		Gap          json.RawMessage `json:"gap_to_leader"`
@@ -151,10 +151,10 @@ func (a *app) fetchSessionResults(key string, at, now time.Time) ([]map[string]a
 		byNumber[d.Number] = i
 	}
 	sort.SliceStable(results, func(i, j int) bool {
-		if results[i].Position == nil || results[j].Position == nil {
-			return results[i].Position != nil
+		if results[i].Position.n == nil || results[j].Position.n == nil {
+			return results[i].Position.n != nil
 		}
-		return *results[i].Position < *results[j].Position
+		return *results[i].Position.n < *results[j].Position.n
 	})
 	rows := make([]map[string]any, 0, len(results))
 	for _, r := range results {
@@ -163,14 +163,41 @@ func (a *app) fetchSessionResults(key string, at, now time.Time) ([]map[string]a
 		if i, ok := byNumber[r.DriverNumber]; ok {
 			row["driver"], row["surname"], row["team"] = drivers[i].Acronym, drivers[i].LastName, shortTeamName(drivers[i].Team)
 		}
-		if r.Position != nil {
-			row["position"] = *r.Position
+		if r.Position.n != nil {
+			row["position"] = *r.Position.n
 		}
-		row["time"] = sessionTimeCell(r.Duration, r.Gap, r.DNF, r.DNS, r.DSQ, r.Position != nil && *r.Position == 1)
+		row["time"] = sessionTimeCell(r.Duration, r.Gap, r.DNF, r.DNS, r.DSQ, r.Position.n != nil && *r.Position.n == 1)
+		if row["time"] == "" && r.Position.text != "" {
+			row["time"] = r.Position.text
+		}
 		rows = append(rows, row)
 	}
 	end, err := time.Parse(time.RFC3339, match.End)
 	return rows, err == nil && end.Before(now), nil
+}
+
+// sessionPosition is OpenF1's `position`: an integer, null, or a status string
+// like "RT" for a driver who didn't set a time. One string used to fail the
+// whole result list.
+type sessionPosition struct {
+	n    *int
+	text string
+}
+
+func (p *sessionPosition) UnmarshalJSON(raw []byte) error {
+	if string(raw) == "null" {
+		return nil
+	}
+	var n int
+	if json.Unmarshal(raw, &n) == nil {
+		p.n = &n
+		return nil
+	}
+	var text string
+	if json.Unmarshal(raw, &text) == nil {
+		p.text = text
+	}
+	return nil
 }
 
 func sessionTimeCell(duration, gap json.RawMessage, dnf, dns, dsq, leader bool) string {

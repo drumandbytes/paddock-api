@@ -238,6 +238,20 @@ func TestLatestSessionContract(t *testing.T) {
 	}
 }
 
+// OpenF1 sends "RT" as the position of a driver with no time; one string used to
+// fail the whole qualifying result list and leave the fallback session showing.
+func TestSessionPositionAcceptsStatusText(t *testing.T) {
+	var rows []struct {
+		Position sessionPosition `json:"position"`
+	}
+	if err := json.Unmarshal([]byte(`[{"position":1},{"position":null},{"position":"RT"}]`), &rows); err != nil {
+		t.Fatal(err)
+	}
+	if rows[0].Position.n == nil || *rows[0].Position.n != 1 || rows[1].Position.n != nil || rows[2].Position.n != nil || rows[2].Position.text != "RT" {
+		t.Fatalf("unexpected positions: %#v", rows)
+	}
+}
+
 func TestLatestSessionExcludesRaceAndSurvivesLockout(t *testing.T) {
 	mock := newUpstreamMock(t)
 	a := testApp(t, mock)
