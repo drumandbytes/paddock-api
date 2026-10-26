@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.2](https://github.com/drumandbytes/paddock-api/compare/v2.6.1...v2.6.2) (2026-10-26)
+
+
+### Bug Fixes
+
+* **deps:** bump echo/v4 to 4.16.1 (GHSA-cxf3-9h37-7rr8 and 3 others) ([#65](https://github.com/drumandbytes/paddock-api/issues/65)) ([73f226c](https://github.com/drumandbytes/paddock-api/commit/73f226c3d1ec719a023363f39afbd548dfd25f8c))
+
 ## [2.6.1](https://github.com/drumandbytes/paddock-api/compare/v2.6.0...v2.6.1) (2026-10-10)
 
 
