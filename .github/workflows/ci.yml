@@ -36,6 +36,9 @@ jobs:
           context: .
           file: Dockerfile
           push: false
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   zizmor:
     uses: drumandbytes/reusable-actions/.github/workflows/zizmor.yml@v1
