@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.3](https://github.com/drumandbytes/paddock-api/compare/v2.6.2...v2.6.3) (2026-11-10)
+
+
+### Bug Fixes
+
+* **deps:** bump golang.org/x/net to 0.62.0 (CVE-2026-78661) ([#71](https://github.com/drumandbytes/paddock-api/issues/71)) ([4ec5ddf](https://github.com/drumandbytes/paddock-api/commit/4ec5ddf4e4ddf92d1cdf0addc935a0806bbb3498))
+
 ## [2.6.2](https://github.com/drumandbytes/paddock-api/compare/v2.6.1...v2.6.2) (2026-10-26)
 
 
