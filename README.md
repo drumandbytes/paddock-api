@@ -46,7 +46,7 @@ OpenF1's free tier is locked out entirely (past sessions included) for a stretch
 Track maps break that pattern entirely, on purpose. Tracing a circuit's outline from a car's GPS telemetry only works once a car has actually driven it, which is useless for a brand-new venue's debut weekend, and turned out to be the single most fragile part of this whole service. It's replaced now with [bacinger/f1-circuits](https://github.com/bacinger/f1-circuits), a maintained dataset of real circuit geometry that doesn't care whether a session has happened yet. No live API call, no rate limit, works for a track that's never hosted a race.
 
 # Getting started
-Runs as a single container - `docker compose` is the easiest way in.
+Runs as a single container: `docker compose` is the easiest way in.
 
 ```yaml
 services:
