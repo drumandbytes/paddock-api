@@ -4,7 +4,7 @@
 
 # paddock-api
 
-**F1 data, shaped for a dashboard - not a spreadsheet.**
+**F1 data, shaped for a dashboard, not a spreadsheet.**
 
 [Drumandbytes Projects](https://drumandbytes.com/projects/?ref=glance-f1-readme)
 
@@ -18,34 +18,34 @@ ___
 
 <h3>
 
-[Why This Exists](#why-this-exists) • [What It Does](#what-it-does) • [How It's Built](#how-its-built)
+[Why this exists](#why-this-exists) • [What it does](#what-it-does) • [How it's built](#how-its-built)
 <br>
-[Getting Started](#getting-started) • [API Reference](#api-reference) • [Development](#development) • [Demo](#demo)
+[Getting started](#getting-started) • [API reference](#api-reference) • [Development](#development) • [Demo](#demo)
 
 </h3>
 
 </div>
 
-# Why This Exists
-I run [Glance](https://github.com/glanceapp/glance) on a home server, and I wanted an F1 corner of it that felt like it belonged there - local time, a track map before I've even had coffee on qualifying day, team names short enough to fit a dashboard tile instead of "Mercedes-AMG Petronas Formula One Team." The community's [F1 widget](https://github.com/glanceapp/community-widgets/blob/main/widgets/formula1-widgets-by-abaza738/README.md) got the styling right, but the API behind it was built for a generic consumer, not a self-hosted dashboard: everything in UTC, no caching (so every widget refresh meant a slow round-trip), and just enough detail to be a bit unsatisfying for a Friday-night "what's happening this weekend" glance.
+# Why this exists
+I run [Glance](https://github.com/glanceapp/glance) on a home server, and I wanted an F1 corner of it that felt like it belonged there: local time, a track map before I've even had coffee on qualifying day, team names short enough to fit a dashboard tile instead of "Mercedes-AMG Petronas Formula One Team." The community's [F1 widget](https://github.com/glanceapp/community-widgets/blob/main/widgets/formula1-widgets-by-abaza738/README.md) got the styling right, but the API behind it was built for a generic consumer, not a self-hosted dashboard: everything in UTC, no caching (so every widget refresh meant a slow round-trip), and just enough detail to be a bit unsatisfying for a Friday-night "what's happening this weekend" glance.
 
-So this exists to be the API I actually wanted underneath those widgets - same look, an engine built for exactly one job.
+So this exists to be the API I actually wanted underneath those widgets: same look, an engine built for exactly one job.
 
-# What It Does
+# What it does
 Point it at a race weekend and it tells you what's actually useful to know: when the next session is, in your own timezone, counting down to whichever one you care about. It knows who's leading the championship and by how much, cleaned up to team names that fit a phone screen. It'll draw you the track before a single lap has been driven there. And once a session's actually happened, it'll tell you what tyres everyone was on and for how long - not the fantasy of who's got how many sets left, just what's real.
 
-Everything is cached deliberately, not by default TTL - a session's data doesn't change until the next session starts, so that's when the cache actually expires, not some arbitrary five minutes later.
+Everything is cached deliberately, not by default TTL: a session's data doesn't change until the next session starts, so that's when the cache actually expires, not some arbitrary five minutes later.
 
-# How It's Built
+# How it's built
 It's a small Go service (Echo), and the interesting decisions are mostly about *where the data comes from* and *when it's actually fetched*.
 
 Schedules, standings, and race results come from the [Jolpica](https://github.com/jolpica/jolpica-f1) Ergast-compatible mirror; tyre stint data comes from [OpenF1](https://openf1.org/). Both are free, but F1's live-timing backend behind them has a real rate ceiling, and it's shared - burn through it chasing something that isn't there, and every other endpoint on the same network starves too. So the rule here is: only ever ask for a session that's actually happened, and never guess. An in-memory cache, keyed to when the underlying data can actually change (not a fixed TTL), keeps most requests from hitting upstream at all.
 
-OpenF1's free tier is locked out entirely (past sessions included) for a stretch around every live session, so once a session has finished its results are treated as immutable and kept for good - in memory, and on disk under `CACHE_DIR` if a volume is mounted there, so a restart during a lockout doesn't blank them. Anything else that never changes once it exists can use the same store.
+OpenF1's free tier is locked out entirely (past sessions included) for a stretch around every live session, so once a session has finished its results are treated as immutable and kept for good, in memory, and on disk under `CACHE_DIR` if a volume is mounted there, so a restart during a lockout doesn't blank them. Anything else that never changes once it exists can use the same store.
 
-Track maps break that pattern entirely, on purpose. Tracing a circuit's outline from a car's GPS telemetry only works once a car has actually driven it - which is useless for a brand-new venue's debut weekend, and turned out to be the single most fragile part of this whole service. It's replaced now with [bacinger/f1-circuits](https://github.com/bacinger/f1-circuits), a maintained dataset of real circuit geometry that doesn't care whether a session has happened yet. No live API call, no rate limit, works for a track that's never hosted a race.
+Track maps break that pattern entirely, on purpose. Tracing a circuit's outline from a car's GPS telemetry only works once a car has actually driven it, which is useless for a brand-new venue's debut weekend, and turned out to be the single most fragile part of this whole service. It's replaced now with [bacinger/f1-circuits](https://github.com/bacinger/f1-circuits), a maintained dataset of real circuit geometry that doesn't care whether a session has happened yet. No live API call, no rate limit, works for a track that's never hosted a race.
 
-# Getting Started
+# Getting started
 Runs as a single container - `docker compose` is the easiest way in.
 
 ```yaml
@@ -74,9 +74,9 @@ volumes:
 | `EVENT_DETAIL` | No, defaults to `main` | Which sessions `/f1/next_race/` counts down to: `main` (quali + races, skips practice), `race` (races only), or `detailed` (every session). |
 | `CACHE_DIR` | No, defaults to `/data` in the image | Where finished-session data is kept so it survives restarts. Mount a volume there (as above); without one it still works, it just doesn't outlive the container. Runs as UID 65532, so a bind mount or Kubernetes volume needs to be writable by it. |
 
-Once it's running, grab the widgets you want from [`widgets/`](./widgets/) and drop them into your Glance config - see that folder's own README for setup and what each one shows. See the [Glance docs](https://github.com/glanceapp/glance/blob/main/docs/configuration.md#including-other-config-files) for how config files like these get included.
+Once it's running, grab the widgets you want from [`widgets/`](./widgets/) and drop them into your Glance config; see that folder's own README for setup and what each one shows. See the [Glance docs](https://github.com/glanceapp/glance/blob/main/docs/configuration.md#including-other-config-files) for how config files like these get included.
 
-# API Reference
+# API reference
 Everything returns JSON except the track map, which is an SVG image.
 
 | Endpoint | Description |
@@ -122,7 +122,7 @@ Same widget styling as the community integration it's built on - the difference 
 </tr>
 </table>
 
-# Project Structure
+# Project structure
 ```
 paddock-api/
 ├── main.go            # App wiring: config, HTTP client, cache, server setup
@@ -151,4 +151,4 @@ paddock-api/
 Built with the help of an AI coding assistant (Claude). I review and test what gets published.
 
 # License
-MIT - see [LICENSE](./LICENSE).
+MIT, see [LICENSE](./LICENSE).
