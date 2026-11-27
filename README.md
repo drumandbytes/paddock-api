@@ -32,14 +32,14 @@ I run [Glance](https://github.com/glanceapp/glance) on a home server, and I want
 So this exists to be the API I actually wanted underneath those widgets: same look, an engine built for exactly one job.
 
 # What it does
-Point it at a race weekend and it tells you what's actually useful to know: when the next session is, in your own timezone, counting down to whichever one you care about. It knows who's leading the championship and by how much, cleaned up to team names that fit a phone screen. It'll draw you the track before a single lap has been driven there. And once a session's actually happened, it'll tell you what tyres everyone was on and for how long - not the fantasy of who's got how many sets left, just what's real.
+Point it at a race weekend and it tells you what's actually useful to know: when the next session is, in your own timezone, counting down to whichever one you care about. It knows who's leading the championship and by how much, cleaned up to team names that fit a phone screen. It'll draw you the track before a single lap has been driven there. And once a session's actually happened, it'll tell you what tyres everyone was on and for how long, not the fantasy of who's got how many sets left, just what's real.
 
 Everything is cached deliberately, not by default TTL: a session's data doesn't change until the next session starts, so that's when the cache actually expires, not some arbitrary five minutes later.
 
 # How it's built
 It's a small Go service (Echo), and the interesting decisions are mostly about *where the data comes from* and *when it's actually fetched*.
 
-Schedules, standings, and race results come from the [Jolpica](https://github.com/jolpica/jolpica-f1) Ergast-compatible mirror; tyre stint data comes from [OpenF1](https://openf1.org/). Both are free, but F1's live-timing backend behind them has a real rate ceiling, and it's shared - burn through it chasing something that isn't there, and every other endpoint on the same network starves too. So the rule here is: only ever ask for a session that's actually happened, and never guess. An in-memory cache, keyed to when the underlying data can actually change (not a fixed TTL), keeps most requests from hitting upstream at all.
+Schedules, standings, and race results come from the [Jolpica](https://github.com/jolpica/jolpica-f1) Ergast-compatible mirror; tyre stint data comes from [OpenF1](https://openf1.org/). Both are free, but F1's live-timing backend behind them has a real rate ceiling, and it's shared: burn through it chasing something that isn't there, and every other endpoint on the same network starves too. So the rule here is: only ever ask for a session that's actually happened, and never guess. An in-memory cache, keyed to when the underlying data can actually change (not a fixed TTL), keeps most requests from hitting upstream at all.
 
 OpenF1's free tier is locked out entirely (past sessions included) for a stretch around every live session, so once a session has finished its results are treated as immutable and kept for good, in memory, and on disk under `CACHE_DIR` if a volume is mounted there, so a restart during a lockout doesn't blank them. Anything else that never changes once it exists can use the same store.
 
@@ -69,7 +69,7 @@ volumes:
 
 | Variable | Required | Description |
 |---|---|---|
-| `TIMEZONE` | Yes | IANA timezone name (e.g. `America/Edmonton`, `Europe/Tallinn`) - every timestamp the API returns is converted to this. |
+| `TIMEZONE` | Yes | IANA timezone name (e.g. `America/Edmonton`, `Europe/Tallinn`): every timestamp the API returns is converted to this. |
 | `TRACK_COLOUR` | Yes | Hex colour (e.g. `#e5d486`) for the track-map line. |
 | `EVENT_DETAIL` | No, defaults to `main` | Which sessions `/f1/next_race/` counts down to: `main` (quali + races, skips practice), `race` (races only), or `detailed` (every session). |
 | `CACHE_DIR` | No, defaults to `/data` in the image | Where finished-session data is kept so it survives restarts. Mount a volume there (as above); without one it still works, it just doesn't outlive the container. Runs as UID 65532, so a bind mount or Kubernetes volume needs to be writable by it. |
@@ -81,14 +81,14 @@ Everything returns JSON except the track map, which is an SVG image.
 
 | Endpoint | Description |
 |---|---|
-| `GET /f1/next_race/` | The next (or currently in-progress) race weekend - full session schedule in your `TIMEZONE`, counting down to the next session per `EVENT_DETAIL`. |
+| `GET /f1/next_race/` | The next (or currently in-progress) race weekend: full session schedule in your `TIMEZONE`, counting down to the next session per `EVENT_DETAIL`. |
 | `GET /f1/last_race/` | Full classification for the most recently completed race. |
 | `GET /f1/drivers_standings/` | Drivers' championship standings, simplified team names, nationality flags. |
 | `GET /f1/constructors_standings/` | Constructors' championship standings, simplified team names, nationality flags. |
 | `GET /f1/next_map/` | Track map for the next race's circuit. |
-| `GET /f1/tyre_usage/` | Per-driver compound and stint length for each session of the current weekend that's happened so far (FP1 through Race). Usage only, not allocation - there's no structured source anywhere for a driver's pre-weekend tyre-compound allocation, so this only reports what was actually used once a session's run. Stays on the latest weekend until the next one's first session starts, and keeps finished sessions in memory since OpenF1's free tier locks out all access while any session is live. |
-| `GET /f1/latest_session/` | Classification of the most recently finished non-race session of the current weekend (practice, sprint qualifying, qualifying or sprint) - best lap for the leader, gap for everyone else. The Grand Prix itself is `/f1/last_race/`. Sourced from OpenF1, so it shares its live-session lockout (finished sessions are kept in memory once fetched). |
-| `GET /healthz` | Liveness probe - always `200 {"status":"ok"}` while the process serves HTTP; never calls upstream APIs. |
+| `GET /f1/tyre_usage/` | Per-driver compound and stint length for each session of the current weekend that's happened so far (FP1 through Race). Usage only, not allocation: there's no structured source anywhere for a driver's pre-weekend tyre-compound allocation, so this only reports what was actually used once a session's run. Stays on the latest weekend until the next one's first session starts, and keeps finished sessions in memory since OpenF1's free tier locks out all access while any session is live. |
+| `GET /f1/latest_session/` | Classification of the most recently finished non-race session of the current weekend (practice, sprint qualifying, qualifying or sprint): best lap for the leader, gap for everyone else. The Grand Prix itself is `/f1/last_race/`. Sourced from OpenF1, so it shares its live-session lockout (finished sessions are kept in memory once fetched). |
+| `GET /healthz` | Liveness probe: always `200 {"status":"ok"}` while the process serves HTTP; never calls upstream APIs. |
 
 # Development
 Requires Go 1.26+.
@@ -109,10 +109,10 @@ Four workflows keep this repo honest: [`ci.yml`](./.github/workflows/ci.yml) run
 </td>
 <td width="65%" valign="top">
 
-Same widget styling as the community integration it's built on - the difference is everything underneath it:
+Same widget styling as the community integration it's built on: the difference is everything underneath it:
 
 - Session times in your own timezone, not UTC
-- A track map, drawn before qualifying even happens - even for a circuit that's never hosted a race
+- A track map, drawn before qualifying even happens: even for a circuit that's never hosted a race
 - Team names simplified to fit a dashboard tile, not "Mercedes-AMG Petronas Formula One Team"
 - Tyre compound and stint length per session, once a race weekend is underway
 - Results for the latest practice, qualifying or sprint session, separate from the race
